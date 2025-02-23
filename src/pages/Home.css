@@ -12,19 +12,7 @@
 
 
 @media (max-width: 576px) {
-  /* Name & Joined Date */
-  .profile-header {
-    flex-direction: column;
-    justify-content: left;
-    align-items: flex-start;
-    text-align: left;
-    margin-left: -100px;
-  }
 
-  .profile-name{
-    margin-left:18px;
-    
-  }
 
   .username{
     display: flex ;

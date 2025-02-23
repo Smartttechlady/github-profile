@@ -28,7 +28,8 @@ function Home() {
     try {
       const response = await fetch(`https://api.github.com/users/${username}`);
       if (!response.ok) {
-        setError("User not found");
+        setError("Username is not available");
+        alert("Username is not available");
         setUserData(null);
       } else {
         const data = await response.json();
@@ -40,7 +41,6 @@ function Home() {
       setLoading(false);
     }
   }
-
 
 
   // Theme mode
@@ -106,6 +106,7 @@ function Home() {
         {/* Display Error Message */}
         {error && <p className="text-danger mt-3">{error}</p>}
 
+
         {/* Show Loading Spinner */}
         {loading && (
           <Spinner animation="border" className="mt-3" variant={darkMode ? "light" : "dark"} />
@@ -125,16 +126,20 @@ function Home() {
 
             {/* Profile Section */}
             <Row className="align-items-center  ">
-              <Col xs={3} className="text-center">  
+              <Col xs={3} className="text-center">
                 <img src={userData.avatar_url} alt="Profile" className="rounded-circle img-fluid" />
               </Col>
               <Col xs={9}>
                 {/* Name, Joined Date & User */}
-                <div className="d-flex justify-content-between align-items-center profile-header">
-                  <h5 className="fw-bold profile-name">{userData.name || "No Name"}</h5>
-                  <small >Joined {new Date(userData.created_at).toLocaleDateString()}</small>
+                <div className="d-flex flex-column flex-md-row align-items-md-center profile-header">
+                  <h5 className="fw-bold profile-name text-start">{userData.name || "No Name"}</h5>
+                  <small className="text-start text-md-end ms-md-auto">
+                    Joined {new Date(userData.created_at).toLocaleDateString()}
+                  </small>
                 </div>
-                <p className="username" style={{ color: "#3A7EEC" }} >@{userData.login}</p>
+                <p className="username text-start" style={{ color: "#3A7EEC" }}>
+                  @{userData.login}
+                </p>
               </Col>
             </Row>
 
@@ -158,32 +163,49 @@ function Home() {
             </Row>
 
             {/* Link Section */}
-            <Row className="mt-3 link-section " style={{ marginLeft: "140px" }}>
+            <Row className="mt-3 link-section" style={{ marginLeft: "140px" }}>
               <Col xs={12} md={6} className="d-flex align-items-center mt-2">
                 <FaMapMarkerAlt className="me-2" style={{ color: darkMode ? "#ffffff" : "#000000" }} />{" "}
-                <span>{userData.location || "Not Available"}</span>
+                <span style={{ opacity: userData.location ? 1 : 0.5 }}>
+                  {userData.location || "Not Available"}
+                </span>
               </Col>
+
               <Col xs={12} md={6} className="d-flex align-items-center mt-2">
-                <FaTwitter className="me-2" /> <span>{userData.twitter_username ? `@${userData.twitter_username}` : "Not Available"}</span>
+                <FaTwitter className="me-2" />
+                <span style={{ opacity: userData.twitter_username ? 1 : 0.5 }}>
+                  {userData.twitter_username ? `@${userData.twitter_username}` : "Not Available"}
+                </span>
               </Col>
+
               <Col xs={12} md={6} className="d-flex align-items-center mt-2">
                 <FaLink className="me-2" />
                 {userData.blog ? (
                   <a
                     href={userData.blog}
                     className="text-decoration-none text-truncate d-inline-block"
-                    style={{ color: darkMode ? "#ffffff" : "#000000", maxWidth: "200px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}
+                    style={{
+                      color: darkMode ? "#ffffff" : "#000000",
+                      maxWidth: "200px",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis"
+                    }}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {userData.blog.replace(/(^\w+:|^)\/\//, '').split('/')[0]}...
                   </a>
                 ) : (
-                  <span>Not Available</span>
+                  <span style={{ opacity: 0.5 }}>Not Available</span>
                 )}
               </Col>
+
               <Col xs={12} md={6} className="d-flex align-items-center mt-2">
-                <FaGithub className="me-2" /> <span>@{userData.login}</span>
+                <FaGithub className="me-2" />
+                <span style={{ opacity: userData.login ? 1 : 0.5 }}>
+                  @{userData.login}
+                </span>
               </Col>
             </Row>
           </Container>
